@@ -24,11 +24,16 @@ def allHyponymLemmas(word):
     return [l.name() for h in allHyponyms(word) for l in h.lemmas()]
 
 
+JsonHeaders = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+}
+
 @app.route('/hyponyms/<word>')
 def hyponyms(word):
     # Replace any punctuation (targeting those underscores) with spaces
     hypos = [NonAlphaMatcher.sub(' ', w) for w in allHyponymLemmas(word)]
-    return json.dumps(hypos)
+    return (json.dumps(hypos), JsonHeaders)
 
 
 @app.route('/')
